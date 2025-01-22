@@ -82,7 +82,3 @@ Si deseas contribuir al proyecto:
 3. Realiza tus cambios y haz un commit (`git commit -m 'Añadir nueva funcionalidad'`).
 4. Sube los cambios (`git push origin feature-nueva-funcionalidad`).
 5. Crea un **Pull Request**.
-
-## Contacto
-Para consultas o sugerencias, puedes contactar con el equipo de desarrollo.
-
