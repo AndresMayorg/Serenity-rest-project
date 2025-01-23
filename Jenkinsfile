@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/tu_usuario/tu_proyecto.git'
+                git 'https://github.com/AndresMayorg/Serenity-rest-project.git'
             }
         }
 
