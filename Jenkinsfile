@@ -23,5 +23,11 @@ pipeline {
                 sh 'mvn verify'
             }
         }
+
+        stage('Gerenate Report') {
+                    steps {
+                        sh 'mvn Serenity:aggregate'
+                    }
+                }
     }
 }
