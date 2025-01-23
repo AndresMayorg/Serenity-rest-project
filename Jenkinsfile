@@ -26,7 +26,19 @@ pipeline {
 
         stage('Gerenate Report') {
                     steps {
-                        sh 'mvn Serenity:aggregate'
+                        sh 'mvn serenity:aggregate'
+                    }
+        }
+        stage('Publish Report') {
+                    steps {
+                        publishHTML(target: [
+                            allowMissing: false,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'target/site/serenity',
+                            reportFiles: 'index.html',
+                            reportName: 'Serenity BDD Report'
+                        ])
                     }
                 }
     }
