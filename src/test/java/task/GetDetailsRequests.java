@@ -18,7 +18,6 @@ public class GetDetailsRequests {
                 new Header("x-rapidapi-key", ApiConfig.API_KEY)
         );
 
-        System.out.println("prueba");
         Headers headers = new Headers(headersList);
 
         return SerenityRest.given()
