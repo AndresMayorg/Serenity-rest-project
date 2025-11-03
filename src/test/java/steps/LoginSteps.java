@@ -26,7 +26,7 @@ public class LoginSteps {
     @Then("the login response should be successful")
     public void validateSuccessfulLogin() {
         int statusCode = response.extract().statusCode();
-        Assert.assertTrue("El código de estado debe ser 200 o 302", statusCode == 200 || statusCode == 302);
+        Assert.assertTrue("El código de estado debe ser 302", statusCode == 302);
         excelHandler.writeLog("Código de estado verificado: " + statusCode);
     }
 
