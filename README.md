@@ -1,71 +1,85 @@
-# Serenity Rest Project
+# Serenity Rest Automation Framework
+
+![Java Version](https://img.shields.io/badge/Java-21-orange?style=flat-square&logo=openjdk)
+![Serenity BDD](https://img.shields.io/badge/Serenity_BDD-4.x-green?style=flat-square)
+![Build](https://img.shields.io/badge/Build-Maven-blue?style=flat-square&logo=apache-maven)
 
 ## Descripción
-Este proyecto de automatización de pruebas de servicios REST utiliza Serenity BDD con Cucumber y Java. Implementa el patrón de diseño Page Object Model (POM) para una mejor organización del código y reutilización de los componentes.
+Este proyecto es un framework de automatización para pruebas de servicios **REST**, construido sobre **Serenity BDD**, **Cucumber** y **Java 21**. Implementa un modelo de capas inspirado en el patrón **Page Object Model (POM)** adaptado a servicios, asegurando que el código sea mantenible, escalable y que genere documentación viva de alta calidad.
+
+---
 
 ## Stack Tecnológico
-- **Java 21**: Lenguaje de programación utilizado.
-- **Maven**: Gestión de dependencias y construcción del proyecto.
-- **Serenity BDD**: Framework de pruebas para la generación de reportes y ejecución de pruebas BDD.
-- **Cucumber con Serenity**: Framework para la escritura de pruebas en lenguaje Gherkin.
-- **Serenity Rest**: Extensión de Serenity para pruebas de servicios REST.
-- **Hamcrest**: Librería para validaciones y aserciones.
-- **Patrón de diseño POM (Page Object Model)**: Organización de las pruebas para mejorar la mantenibilidad.
+* **Lenguaje:** Java 21 (LTS).
+* **Gestor de Dependencias:** Maven.
+* **Framework de Pruebas:** Serenity BDD.
+* **BDD:** Cucumber con soporte para Gherkin.
+* **Librería REST:** Serenity Rest (Rest-Assured wrapper).
+* **Validaciones:** Hamcrest y AssertJ.
+* **Manejo de Datos:** Apache POI (Soporte para Excel).
+
+---
+
 ## Estructura del Proyecto
-```
+El proyecto sigue una organización lógica para separar la definición de los servicios de la lógica de las pruebas:
+
+```text
 src/
-├─ test
-│ ├─ java
-│ │ ├─ api.endpoints # Clases para los endpoints (AuthAPI)
-│ │ ├─ steps # Step definitions de Cucumber (LoginSteps)
-│ │ ├─ runners # Test runners de Cucumber (TestRunner)
-│ │ └─ utils # Clases utilitarias (ApiConfig, ExcelDataHandler)
-│ └─ resources
-│ ├─ data # Archivo Excel con datos de prueba (DataFile.xlsx)
-│ └─ features # Features de Cucumber (login_excel.feature)
-├─ pom.xml # Dependencias y configuración Maven
-└─ serenity.properties # Configuración de Serenity
+└── test/
+    ├── java/
+    │   ├── api.endpoints   # Definición de rutas, payloads y lógica de los servicios.
+    │   ├── steps           # Implementación de los pasos Gherkin (Glue code).
+    │   ├── runners         # Orquestadores para la ejecución de pruebas.
+    │   └── utils           # Clases de apoyo (Lectura de Excel, configuraciones).
+    └── resources/
+        ├── data            # Datasets externos (DataFile.xlsx).
+        ├── features        # Escenarios de negocio escritos en Gherkin.
+        └── serenity.conf   # Configuración centralizada de ambientes y propiedades.
 ```
 
 ## Instalación y Configuración
 ### Prerrequisitos
-- Tener **Java 21** instalado y configurado en el `PATH`.
-- Tener **Maven** instalado y configurado.
-- Tener un IDE como IntelliJ IDEA o Eclipse.
+- JDK 21 instalado y configurado en el JAVA_HOME.
+
+- Maven 3.8+ instalado.
 
 ### Instalación
 1. Clonar el repositorio:
-   ```sh
+   ```
    git clone <URL_DEL_REPOSITORIO>
    ```
 2. Navegar al directorio del proyecto:
-   ```sh
+   ```
    cd serenity-rest-project
    ```
-3. Instalar dependencias con Maven:
-   ```sh
-   mvn clean install
+3. Descargar dependencias y compilar:
+   ```
+   mvn clean install -DskipTests
    ```
 
 ## Ejecución de Pruebas
-### Ejecutar pruebas con Maven
-Para ejecutar todas las pruebas del proyecto:
-```sh
-mvn clean verify
+
+Comandos de Consola
+
+Para ejecutar todos los escenarios y generar el reporte
+```
+mvn clean verify -Dcucumber.filter.tags="@login"
 ```
 
-Para ejecutar una suite específica:
-```sh
-mvn clean verify -Dcucumber.options="--tags @login"
+Para ejecutar en un ambiente específico (si está configurado en serenity.conf):
+```
+mvn clean verify -Denvironment=staging
 ```
 
-## Reportes de Serenity
-Después de la ejecución de las pruebas, Serenity genera un reporte en la siguiente ruta:
+## Reportes de Ejecución
+Serenity genera reportes detallados que incluyen los pasos ejecutados, el tiempo de respuesta y el detalle de los Requests/Responses de la API.
+
+El reporte interactivo se encuentra en:
 ```
 target/site/serenity/index.html
 ```
-Para abrirlo en un navegador:
-```sh
+Para abrirlo automáticamente (macOS/Linux)::
+```
 open target/site/serenity/index.html
 ```
 
