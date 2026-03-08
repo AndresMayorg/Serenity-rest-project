@@ -5,6 +5,7 @@
 ![Build](https://img.shields.io/badge/Build-Maven-blue?style=flat-square&logo=apache-maven)
 
 ## Descripción
+
 Este proyecto es un framework de automatización para pruebas de servicios **REST**, construido sobre **Serenity BDD**, **Cucumber** y **Java 21**. Implementa un modelo de capas inspirado en el patrón **Page Object Model (POM)** adaptado a servicios, asegurando que el código sea mantenible, escalable y que genere documentación viva de alta calidad.
 
 ---
@@ -17,6 +18,7 @@ Este proyecto es un framework de automatización para pruebas de servicios **RES
 * **Librería REST:** Serenity Rest (Rest-Assured wrapper).
 * **Validaciones:** Hamcrest y AssertJ.
 * **Manejo de Datos:** Apache POI (Soporte para Excel).
+* **GitHub Actions:** Pipeline de Integración Continua (CI)..
 
 ---
 
@@ -24,6 +26,7 @@ Este proyecto es un framework de automatización para pruebas de servicios **RES
 El proyecto sigue una organización lógica para separar la definición de los servicios de la lógica de las pruebas:
 
 ```text
+.github/workflows/api-ci.yml  # Pipeline de ejecución automática
 src/
 └── test/
     ├── java/
@@ -36,7 +39,18 @@ src/
         ├── features        # Escenarios de negocio escritos en Gherkin.
         └── serenity.conf   # Configuración centralizada de ambientes y propiedades.
 ```
+## Integración Continua (CI/CD)
+El proyecto incluye un pipeline automatizado en GitHub Actions que se ejecuta en cada push o pull_request a la rama master.
 
+El flujo del pipeline realiza:
+
+Checkout: Obtención del código fuente.
+
+Setup: Configuración del entorno con JDK 21.
+
+Execution: Ejecución de pruebas mediante el comando mvn clean verify serenity:aggregate.
+
+Reporting: Consolidación y almacenamiento del reporte interactivo de Serenity.
 ## Instalación y Configuración
 ### Prerrequisitos
 - JDK 21 instalado y configurado en el JAVA_HOME.
