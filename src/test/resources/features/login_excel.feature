@@ -1,12 +1,15 @@
-Feature: OrangeHRM Login API using Excel data
+Feature: User Authentication Security
+  Como un usuario administrativo
+  Quiero autenticarme en la plataforma OrangeHRM
+  Para gestionar el talento humano de la compañía
 
-  @Login
-  Scenario Outline: Successful login in OrangeHRM
-    Given I attempt to authenticate using user data from row <excelRow> of feature "<feature>"
-    Then the login response should be successful
-    And the session cookie must be generated
-    And the response should contain the expected redirect
-    And the response body must have the correct HTML structure
+  @Login @Regression
+  Scenario Outline: Successful administrative login
+    Given User attempts to authenticate using data from row <excelRow> of "<feature>"
+    Then he should receive a redirection status
+    And a new session cookie should be assigned
+    And he should be granted access to the dashboard
+    And the response must be valid HTML
 
     Examples:
       | excelRow | feature |

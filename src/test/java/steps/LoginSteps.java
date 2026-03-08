@@ -5,8 +5,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.response.ValidatableResponse;
-import net.serenitybdd.annotations.Steps; // Usa net.thucydides.core.annotations.Steps si usas versiones anteriores
-import org.junit.Assert;
+import net.serenitybdd.annotations.Steps;
+import org.hamcrest.Matchers;
 import utils.ExcelDataHandler;
 import java.io.IOException;
 import java.util.Map;
@@ -17,43 +17,35 @@ public class LoginSteps {
     private AuthAPI authAPI;
 
     private final ExcelDataHandler excelHandler = new ExcelDataHandler();
-
     private ValidatableResponse response;
-    private String sessionCookie;
 
-    @Given("I attempt to authenticate using user data from row {int} of feature {string}")
+    @Given("User attempts to authenticate using data from row {int} of {string}")
     public void authenticateWithUserData(int excelRow, String feature) throws IOException {
         Map<String, String> loginData = excelHandler.readExcelRowData(feature, excelRow);
         response = authAPI.performLogin(loginData);
-        sessionCookie = response.extract().cookie("orangehrm");
-        excelHandler.writeLog("Cookie obtenida: " + sessionCookie);
     }
 
-    @Then("the login response should be successful")
+    @Then("he should receive a redirection status")
     public void validateSuccessfulLogin() {
-        int statusCode = response.extract().statusCode();
-        Assert.assertEquals("El código de estado debe ser 302", 302, statusCode);
-        excelHandler.writeLog("Código de estado verificado: " + statusCode);
+        response.statusCode(302);
+        excelHandler.writeLog("Autenticación procesada: Status 302 OK.");
     }
 
-    @And("the session cookie must be generated")
-    public void validateSessionCookie() {
-        Assert.assertNotNull("La cookie de sesión no debe ser nula", sessionCookie);
-        excelHandler.writeLog("Cookie verificada correctamente.");
+    @And("a new session cookie should be assigned")
+    public void validateSessionCookiePersistence() {
+        response.header("Set-Cookie", Matchers.notNullValue());
+        response.cookie("orangehrm", Matchers.not(Matchers.emptyString()));
+        excelHandler.writeLog("Persistencia de sesión confirmada: Cookie 'orangehrm' generada.");
     }
 
-    @And("the response should contain the expected redirect")
-    public void validateRedirectHeader() {
-        String locationHeader = response.extract().header("Location");
-        Assert.assertNotNull("El header Location debe existir", locationHeader);
-        Assert.assertTrue("Debe contener la ruta de login o dashboard", locationHeader.contains("/auth/login"));
-        excelHandler.writeLog("Redirect verificado: " + locationHeader);
+    @And("he should be granted access to the dashboard")
+    public void validateRedirectToHome() {
+        response.header("Location", Matchers.containsString("/dashboard/index"));
+        excelHandler.writeLog("Redirección al Dashboard confirmada.");
     }
 
-    @And("the response body must have the correct HTML structure")
+    @And("the response must be valid HTML")
     public void validateHtmlStructure() {
-        String body = response.extract().body().asString();
-        Assert.assertTrue("El body debe contener la etiqueta <html>", body.contains("<html>"));
-        excelHandler.writeLog("Estructura HTML verificada correctamente.");
+        response.body(Matchers.containsString("<html>"));
     }
 }
