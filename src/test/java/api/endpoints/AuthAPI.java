@@ -27,6 +27,7 @@ public class AuthAPI {
                 .get(LOGIN_PAGE);
 
         String sessionCookie = setupResponse.getCookie("orangehrm");
+
         String csrfToken = extractToken(setupResponse.getBody().asString());
 
         return SerenityRest.given()
